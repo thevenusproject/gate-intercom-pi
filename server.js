@@ -1,6 +1,7 @@
 import gpio from "rpi-gpio";
 import _ from "lodash";
 import { config as dotenv_config } from "dotenv";
+import Blynk from "blynk-library";
 import Telegraf, { Telegram } from "telegraf";
 
 dotenv_config();
