@@ -1,0 +1,13 @@
+[Unit]
+Description=GateIntercom
+After=multi-user.target
+
+[Service]
+Environment=NODE_PORT=3001
+Type=simple
+User=root
+ExecStart=/usr/bin/npm start --prefix /root/dev/gate-intercom-pi/ > /root/dev/gate-intercom-pi/logs/GateIntercom.log 2>&1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
