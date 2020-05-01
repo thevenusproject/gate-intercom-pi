@@ -1,19 +1,17 @@
-import gpio from "rpi-gpio";
 import _ from "lodash";
 import { config as dotenv_config } from "dotenv";
 import Blynk from "blynk-library";
 import Telegraf, { Telegram } from "telegraf";
 
 dotenv_config();
-// console.log(`Your port is ${process.env.PORT}`); // 3000
 const {
   MY_CHAT_ID,
   GATE_GROUP_CHAT_ID,
   BLYNK_AUTH_TOKEN,
   TELEGRAM_TOKEN,
 } = process.env;
-const telegraf = new Telegraf(TELEGRAM_TOKEN); // required for replying to messages
-const telegram = new Telegram(TELEGRAM_TOKEN); // required for initiating conversation
+// const telegraf = new Telegraf(TELEGRAM_TOKEN); // required for replying to messages
+// const telegram = new Telegram(TELEGRAM_TOKEN); // required for initiating conversation
 var blynk = new Blynk.Blynk(BLYNK_AUTH_TOKEN);
 
 const v10 = new blynk.VirtualPin(10);
