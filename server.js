@@ -2,6 +2,7 @@ import _ from "lodash";
 import { config as dotenv_config } from "dotenv";
 import Blynk from "blynk-library";
 // import Telegraf, { Telegram } from "telegraf";
+import {exec} from 'child_process';
 
 dotenv_config();
 const {
@@ -24,7 +25,7 @@ async function setupBlynkPins() {
     // turn HDMI on
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
-      process.exec("tvservice -p", function (msg) {
+      exec("tvservice -p", function (msg) {
         console.log(msg);
       });
     }
@@ -33,7 +34,7 @@ async function setupBlynkPins() {
     // turn HDMI off
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
-      process.exec("tvservice -o", function (msg) {
+      exec("tvservice -o", function (msg) {
         console.log(msg);
       });
     }
@@ -41,7 +42,7 @@ async function setupBlynkPins() {
   blynkRPiReboot.on("write", function (param) {
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
-      process.exec("sudo /sbin/reboot -r", function (msg) {
+      exec("sudo /sbin/reboot -r", function (msg) {
         console.log(msg);
       });
     }
