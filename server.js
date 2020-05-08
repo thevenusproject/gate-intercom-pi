@@ -22,6 +22,7 @@ async function setupBlynkPins() {
   v10.on("write", async function (param) {
     // const value = _.get(param, "[0]") !== "0";
     // turn HDMI on
+    console.log('HDMI on param, ',param)
     if (param === 1) {
       // Runs the CLI command if the button on V10 is pressed
       process.exec("tvservice -p", function (msg) {
@@ -31,6 +32,7 @@ async function setupBlynkPins() {
   });
   v11.on("write", async function (param) {
     // turn HDMI off
+    console.log('HDMI off param, ',param)
     if (param === 1) {
       // Runs the CLI command if the button on V10 is pressed
       process.exec("tvservice -o", function (msg) {
