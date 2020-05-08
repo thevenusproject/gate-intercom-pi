@@ -42,7 +42,7 @@ async function setupBlynkPins() {
   blynkRPiReboot.on("write", function (param) {
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
-      exec("sudo /sbin/reboot -r", function  (err, stdout, stderr) {
+      exec("sudo /sbin/reboot", function  (err, stdout, stderr) {
         if (err) console.log(stderr)
         else console.log(stdout);
       });
