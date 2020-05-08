@@ -43,7 +43,8 @@ async function setupBlynkPins() {
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
       exec("sudo /sbin/reboot -r", function  (err, stdout, stderr) {
-        console.log(stdout);
+        if (err) console.log(stderr)
+        else console.log(stdout);
       });
     }
   });
