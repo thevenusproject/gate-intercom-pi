@@ -25,8 +25,8 @@ async function setupBlynkPins() {
     // turn HDMI on
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
-      exec("tvservice -p", function (msg) {
-        console.log(msg);
+      exec("tvservice -p", function (err, stdout, stderr) {
+        console.log(stdout);
       });
     }
   });
@@ -34,16 +34,16 @@ async function setupBlynkPins() {
     // turn HDMI off
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
-      exec("tvservice -o", function (msg) {
-        console.log(msg);
+      exec("tvservice -o", function  (err, stdout, stderr) {
+        console.log(stdout);
       });
     }
   });
   blynkRPiReboot.on("write", function (param) {
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
-      exec("sudo /sbin/reboot -r", function (msg) {
-        console.log(msg);
+      exec("sudo /sbin/reboot -r", function  (err, stdout, stderr) {
+        console.log(stdout);
       });
     }
   });
