@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { config as dotenv_config } from "dotenv";
 import Blynk from "blynk-library";
-import Telegraf, { Telegram } from "telegraf";
+// import Telegraf, { Telegram } from "telegraf";
 
 dotenv_config();
 const {
@@ -59,50 +59,8 @@ async function setupBlynkPins() {
 
 async function setup() {
   await setupBlynkPins().catch(e => killProcess(e));
-  setupTelegram().catch(e => killProcess(e));
 }
 
-// Telegram
-async function setupTelegram() {
-  telegraf.start((ctx) => {
-    ctx.reply("Welcome!");
-  });
-  telegraf.use(async (ctx, next) => {
-    const chat_id = _.get(ctx, "update.message.chat.id")  + "";
-    if (chat_id && (chat_id === MY_CHAT_ID || chat_id === GATE_GROUP_CHAT_ID)) next();
-    else if (chat_id)
-      console.warn(
-        `Telegram Message from unauthorized chat! Chat ID ${chat_id}`
-      );
-    else console.log('Message irrelevant to the bot')
-  });
-  telegraf.command("open", async (ctx) => {
-    // ctx.reply("Gate is opening");
-  });
-
-  await telegraf.launch();
-  let response = pickRandomFromArray([
-    "I'm back online, how long was I out? Minutes? Days? Years???",
-    "Reporting back online",
-    "Corcen here, working as usual",
-    "A lovely day to be back online again!",
-  ])
-  await sendTelegramAdminMessage(response);
-}
-
-async function sendTelegramGroupMessage(message) {
-  await telegram.sendMessage(GATE_GROUP_CHAT_ID, message);
-}
-
-async function sendTelegramAdminMessage(message) {
-  await telegram.sendMessage(MY_CHAT_ID, message);
-}
-
-//
-
-async function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 function killProcess(msg) {
   console.log('killing process', msg)
