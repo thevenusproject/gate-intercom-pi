@@ -6,14 +6,14 @@ import {exec} from 'child_process';
 
 dotenv_config();
 const {
-  MY_CHAT_ID,
-  GATE_GROUP_CHAT_ID,
   BLYNK_AUTH_TOKEN,
-  TELEGRAM_TOKEN,
+  BLYNK_SERVER
 } = process.env;
 // const telegraf = new Telegraf(TELEGRAM_TOKEN); // required for replying to messages
 // const telegram = new Telegram(TELEGRAM_TOKEN); // required for initiating conversation
-var blynk = new Blynk.Blynk(BLYNK_AUTH_TOKEN);
+var blynk = new Blynk.Blynk(BLYNK_AUTH_TOKEN, {
+  connector : new Blynk.TcpClient( { addr: BLYNK_SERVER, port: 8080 } )  // This takes all the info and directs the connection to you Local Server.
+});
 
 const v10 = new blynk.VirtualPin(10);
 const v11 = new blynk.VirtualPin(11);
@@ -33,15 +33,19 @@ async function setupBlynkPins() {
   v11.on("write", async function (param) {
     // turn HDMI off
     if (param[0] === '1') {
-      // Runs the CLI command if the button on V10 is pressed
+      // Runs the CLI command if the button on V11 is pressed
       exec("tvservice -o", function  (err, stdout, stderr) {
+        console.log(stdout);
+      });
+      await sleep(3000);
+      exec("sudo chvt 2", function  (err, stdout, stderr) {
         console.log(stdout);
       });
     }
   });
   blynkRPiReboot.on("write", function (param) {
     if (param[0] === '1') {
-      // Runs the CLI command if the button on V10 is pressed
+      // Runs the CLI command if the button on V21 is pressed
       exec("sudo /sbin/reboot", function  (err, stdout, stderr) {
         if (err) console.log(stderr)
         else console.log(stdout);
@@ -67,6 +71,10 @@ async function setup() {
 function killProcess(msg) {
   console.log('killing process', msg)
   process.kill(process.pid, 'SIGTERM')
+}
+
+export async function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 setup().catch((e) => console.log("err in setup", e));

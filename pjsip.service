@@ -5,8 +5,7 @@ After=multi-user.target
 [Service]
 Type=forking
 User=pi
-ExecStart=/home/pi/dev/pjproject-2.8/pjsip-apps/bin/pjsua-armv6l-unknown-linux-gnueabihf --config-file /home/pi/dev/pjproject-2.8/pjsip-apps/bin/.pjsua-conf >> /home/pi/dev/gate-intercom-pi/logs/pjsip.log 2>&1
-Restart=on-failure
+ExecStart=/usr/local/bin/pjsua --config-file /home/pi/dev/pjproject-2.8/pjsip-apps/bin/.pjsua-conf
 RestartSec=10
 
 [Install]
