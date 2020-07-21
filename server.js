@@ -15,12 +15,12 @@ const {
 var blynk;
 
 async function setupBlynkPins() {
-  const v10 = new blynk.VirtualPin(10);
-  const v11 = new blynk.VirtualPin(11);
-  const blynkRPiReboot = new blynk.VirtualPin(21); // Setup Reboot Button
   blynk = new Blynk.Blynk(BLYNK_AUTH_TOKEN, {
     connector : new Blynk.TcpClient( { addr: BLYNK_SERVER, port: 8080 } )  // This takes all the info and directs the connection to you Local Server.
   });
+  const v10 = new blynk.VirtualPin(10);
+  const v11 = new blynk.VirtualPin(11);
+  const blynkRPiReboot = new blynk.VirtualPin(21); // Setup Reboot Button
   v10.on("write", async function (param) {
     // const value = _.get(param, "[0]") !== "0";
     // turn HDMI on
