@@ -3,23 +3,25 @@ import { config as dotenv_config } from "dotenv";
 import Blynk from "blynk-library";
 // import Telegraf, { Telegram } from "telegraf";
 import {exec} from 'child_process';
-
+import {init} from "./sipHelper";
 dotenv_config();
+
 const {
   BLYNK_AUTH_TOKEN,
   BLYNK_SERVER
 } = process.env;
+
 // const telegraf = new Telegraf(TELEGRAM_TOKEN); // required for replying to messages
 // const telegram = new Telegram(TELEGRAM_TOKEN); // required for initiating conversation
-var blynk = new Blynk.Blynk(BLYNK_AUTH_TOKEN, {
-  connector : new Blynk.TcpClient( { addr: BLYNK_SERVER, port: 8080 } )  // This takes all the info and directs the connection to you Local Server.
-});
-
-const v10 = new blynk.VirtualPin(10);
-const v11 = new blynk.VirtualPin(11);
-const blynkRPiReboot = new blynk.VirtualPin(21); // Setup Reboot Button
+var blynk;
 
 async function setupBlynkPins() {
+  const v10 = new blynk.VirtualPin(10);
+  const v11 = new blynk.VirtualPin(11);
+  const blynkRPiReboot = new blynk.VirtualPin(21); // Setup Reboot Button
+  blynk = new Blynk.Blynk(BLYNK_AUTH_TOKEN, {
+    connector : new Blynk.TcpClient( { addr: BLYNK_SERVER, port: 8080 } )  // This takes all the info and directs the connection to you Local Server.
+  });
   v10.on("write", async function (param) {
     // const value = _.get(param, "[0]") !== "0";
     // turn HDMI on
@@ -38,7 +40,7 @@ async function setupBlynkPins() {
         console.log(stdout);
       });
       await sleep(3000);
-      exec("sudo chvt 2", function  (err, stdout, stderr) {
+      exec("sudo /bin/chvt 2", function  (err, stdout, stderr) {
         console.log(stdout);
       });
     }
