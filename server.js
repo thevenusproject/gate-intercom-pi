@@ -3,7 +3,6 @@ import { config as dotenv_config } from "dotenv";
 import Blynk from "blynk-library";
 // import Telegraf, { Telegram } from "telegraf";
 import {exec} from 'child_process';
-import {init} from "./sipHelper";
 dotenv_config();
 
 const {
