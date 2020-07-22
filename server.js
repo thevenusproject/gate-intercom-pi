@@ -3,6 +3,7 @@ import { config as dotenv_config } from "dotenv";
 import Blynk from "blynk-library";
 // import Telegraf, { Telegram } from "telegraf";
 import {exec} from 'child_process';
+import {turnOffHDMI, turnOnHDMI} from "./piHelper"
 dotenv_config();
 
 const {
@@ -20,7 +21,7 @@ async function setupBlynkPins() {
   });
   const v10 = new blynk.VirtualPin(10);
   const v11 = new blynk.VirtualPin(11);
-  const blynkRPiReboot = new blynk.VirtualPin(21); // Setup Reboot Button
+  const blynkRPiRebootPin = new blynk.VirtualPin(21); // Setup Reboot Button
   v10.on("write", async function (param) {
     // const value = _.get(param, "[0]") !== "0";
     // turn HDMI on
@@ -35,22 +36,13 @@ async function setupBlynkPins() {
     // turn HDMI off
     if (param[0] === '1') {
       // Runs the CLI command if the button on V11 is pressed
-      exec("tvservice -o", function  (err, stdout, stderr) {
-        console.log(stdout);
-      });
-      await sleep(3000);
-      exec("sudo /bin/chvt 2", function  (err, stdout, stderr) {
-        console.log(stdout);
-      });
+      await turnOnHDMI();
     }
   });
-  blynkRPiReboot.on("write", function (param) {
+  blynkRPiRebootPin.on("write", async function (param) {
     if (param[0] === '1') {
       // Runs the CLI command if the button on V21 is pressed
-      exec("sudo /sbin/reboot", function  (err, stdout, stderr) {
-        if (err) console.log(stderr)
-        else console.log(stdout);
-      });
+      await turnOffHDMI()
     }
   });
 }
@@ -66,6 +58,7 @@ async function setupBlynkPins() {
 
 async function setup() {
   await setupBlynkPins().catch(e => killProcess(e));
+  await turnOffHDMI().catch(e => console.log('err turning HDMI off', e));
 }
 
 
