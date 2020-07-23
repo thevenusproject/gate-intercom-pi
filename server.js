@@ -3,7 +3,7 @@ import { config as dotenv_config } from "dotenv";
 import Blynk from "blynk-library";
 // import Telegraf, { Telegram } from "telegraf";
 import {exec} from 'child_process';
-import {turnOffHDMI, turnOnHDMI} from "./piHelper"
+import {rebootRPi, turnOffHDMI, turnOnHDMI} from "./piHelper"
 dotenv_config();
 
 const {
@@ -27,9 +27,7 @@ async function setupBlynkPins() {
     // turn HDMI on
     if (param[0] === '1') {
       // Runs the CLI command if the button on V10 is pressed
-      exec("tvservice -p", function (err, stdout, stderr) {
-        console.log(stdout);
-      });
+      await turnOffHDMI()
     }
   });
   v11.on("write", async function (param) {
@@ -42,7 +40,7 @@ async function setupBlynkPins() {
   blynkRPiRebootPin.on("write", async function (param) {
     if (param[0] === '1') {
       // Runs the CLI command if the button on V21 is pressed
-      await turnOffHDMI()
+      await rebootRPi()
     }
   });
 }

@@ -13,6 +13,12 @@ export async function turnOnHDMI() {
 }
 
 export async function turnOffHDMI() {
+  exec("tvservice -p", function (err, stdout, stderr) {
+    console.log(stdout);
+  });
+}
+
+export async function rebootRPi() {
   exec("sudo /sbin/reboot", function  (err, stdout, stderr) {
     if (err) console.log(stderr)
     else console.log(stdout);
