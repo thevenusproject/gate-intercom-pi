@@ -32,6 +32,7 @@ async function setupBlynkPins() {
   });
   v11.on("write", async function (param) {
     // turn HDMI off
+    console.log('turnOnHDMI', param)
     if (param[0] === '1') {
       // Runs the CLI command if the button on V11 is pressed
       await turnOnHDMI();
