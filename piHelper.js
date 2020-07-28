@@ -3,7 +3,8 @@ import {exec} from 'child_process';
 
 
 export async function turnOnHDMI() {
-  exec("tvservice -o", function  (err, stdout, stderr) {
+  console.log('turnOnHDMI')
+  exec("tvservice -p", function  (err, stdout, stderr) {
     console.log(stdout);
   });
   await sleep(3000);
@@ -13,7 +14,9 @@ export async function turnOnHDMI() {
 }
 
 export async function turnOffHDMI() {
-  exec("tvservice -p", function (err, stdout, stderr) {
+  console.log('turnOffHDMI')
+
+  exec("tvservice -o", function (err, stdout, stderr) {
     console.log(stdout);
   });
 }
